@@ -1,6 +1,6 @@
 package com.SiegeNetworks;
 
-import SiegeNetworks.NETConnection_Files;
+import SiegeNetworks.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,7 +11,6 @@ import java.io.IOException;
 
 
 public class Controller {
-    NETConnection_Files newConnection;
     @FXML
     javafx.scene.control.TextField input_Address;
 
@@ -37,72 +36,50 @@ public class Controller {
 
     public void onClickBack(ActionEvent actionEvent) {
         int portNumber = Integer.parseInt(input_Port.getText());
-        try {
-            newConnection=new NETConnection_Files(portNumber,input_Address.getText());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater ( () ->
+           {
+               try
+               {
+                   int i=27272;
+                   String meString="127.0.0.1";
+                   //NETConnection_Files newConnection=new NETConnection_Files(portNumber,input_Address.getText());
+                   NETConnection_Files newConnection=new NETConnection_Files(i,meString);
 
-        Platform.runLater ( () -> label_StatusBar.setText("FUCKR"));
-        /*
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                    label_StatusBar.setText("FUCKR");
-                }
-        });
-        */
+                   label_StatusBar.setText("Sending some sincere greetings.");
+                   newConnection.sendSentence("Hi!");
 
-        try
-        {
-            System.out.println("Sending some sincere greetings.");
-            newConnection.sendSentence("Hi!");
+                   String tmpString=newConnection.getSentence();
+                   if (!tmpString.equals("Hi!"))
+                   {
+                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                       throw new IOException("[ERROR] The received data has unexpected content.");
+                   }
 
-            String tmpString=newConnection.getSentence();
-            if (!tmpString.equals("Hi!"))
-            {
-                throw new IOException("[ERROR] Server speaks some foreign language.");
-            }
+                   label_StatusBar.setText("Cool! Server just said us hello. We want to send a file...");
+                   newConnection.sendSentence("filerecv");
 
-            System.out.println("Cool! Server just said us hello. We want to send a file...");
-            newConnection.sendSentence("filerecv");
+                   tmpString=newConnection.getSentence();
+                   if (!tmpString.equals("filesend"))
+                   {
+                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                       return;
+                   }
 
-            tmpString=newConnection.getSentence();
-            if (!tmpString.equals("filesend"))
-            {
-                System.out.println("[ERROR] Server speaks some foreign language.");
-                return;
-            }
+                   label_StatusBar.setText("Server said he is ready to accept the file...");
+                   newConnection.sendFile(input_filePath.getText());
 
-            System.out.println("Cool! Server just said us hello. We want to send a file...");
-            newConnection.sendSentence("filesend");
-
-            tmpString=newConnection.getSentence();
-            if (!tmpString.equals("filerecv"))
-            {
-                System.out.println("[ERROR] Server speaks some foreign language.");
-                return;
-            }
-            System.out.println("Server said he is ready to accept the file...");
-            newConnection.createSendFile(args[2]);
-            long fileSize = newConnection.getFile().length();
-            String fileName = newConnection.getFile().getName();
-            System.out.println("Sending file data: fileName: " + fileName + ", Size:" + fileSize);
-            newConnection.sendFile(); // sendFile(args[2]) can be used, but is avoided to get to the file name\size.
-
-            tmpString=newConnection.getSentence();
-            if (!tmpString.equals("OK"))
-            {
-                System.out.println("[ERROR] Server speaks some foreign language.");
-                return;
-            }
-            System.out.println("File sent.");
-            newConnection.deInit();
-        }
-        catch(IOException e)
-        {
-            throw e;
-        }
+                   tmpString=newConnection.getSentence();
+                   if (!tmpString.equals("OK"))
+                   {
+                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                       return;
+                   }
+                   label_StatusBar.setText("File sent.");
+                   newConnection.deInit();
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           });
     }
 
     public void onClickBrowse(ActionEvent actionEvent)
