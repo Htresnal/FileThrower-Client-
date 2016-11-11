@@ -23,7 +23,7 @@
             <Button layoutX="275.0" layoutY="177.0" mnemonicParsing="false" onAction="#onClickBack" prefHeight="25.0" prefWidth="65.0" text="Send" BorderPane.alignment="CENTER" />
             <TextField fx:id="input_Address" layoutX="14.0" layoutY="95.0" promptText="127.0.01" text="127.0.0.1" BorderPane.alignment="CENTER" />
             <TextField fx:id="input_Port" layoutX="177.0" layoutY="95.0" promptText="27272" text="27272" BorderPane.alignment="CENTER" />
-            <CheckBox fx:id="chbx_DoReceive" layoutX="232.0" layoutY="132.0" mnemonicParsing="false" text="Open on receive?" BorderPane.alignment="CENTER" />
+            <CheckBox fx:id="chbx_DoReceive" layoutX="232.0" layoutY="132.0" mnemonicParsing="false" text="Open on receive" BorderPane.alignment="CENTER" />
             <Label layoutX="14.0" layoutY="73.0" text="IP address" BorderPane.alignment="CENTER" />
             <Label layoutX="177.0" layoutY="73.0" text="Port" BorderPane.alignment="CENTER" />
             <Label layoutX="14.0" layoutY="23.0" text="File to send:" BorderPane.alignment="CENTER" />

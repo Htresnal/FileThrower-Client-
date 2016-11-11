@@ -2,6 +2,7 @@ package com.SiegeNetworks;
 
 import SiegeNetworks.*;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
@@ -34,58 +35,67 @@ public class Controller {
 
     public Controller() throws IOException {}
 
-    public void onClickBack(ActionEvent actionEvent) {
-        int portNumber = Integer.parseInt(input_Port.getText());
-        Platform.runLater ( () ->
-           {
-               try
-               {
-                   int i=27272;
-                   String meString="127.0.0.1";
-                   //NETConnection_Files newConnection=new NETConnection_Files(portNumber,input_Address.getText());
-                   NETConnection_Files newConnection=new NETConnection_Files(i,meString);
+    public void onClickBack(ActionEvent actionEvent)
+    {
+        /*
+        Task task = new Task<Void>()
+        {
+            @Override public Void call()
+            {
+        */
+        try
+        {
+            int portAddr=Integer.parseInt(input_Port.getText());
+            NETConnection_Files newConnection=new NETConnection_Files(portAddr,input_Address.getText());
+            newConnection.init(portAddr,input_Address.getText());
 
-                   label_StatusBar.setText("Sending some sincere greetings.");
-                   newConnection.sendSentence("Hi!");
+            System.out.println("Sending some sincere greetings.");
+            label_StatusBar.setText("Sending some sincere greetings.");
+            newConnection.sendSentence("Hi!");
 
-                   String tmpString=newConnection.getSentence();
-                   if (!tmpString.equals("Hi!"))
-                   {
-                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
-                       throw new IOException("[ERROR] The received data has unexpected content.");
-                   }
+            String tmpString=newConnection.getSentence();
+            if (!tmpString.equals("Hi!"))
+            {
+                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                throw new IOException("[ERROR] The received data has unexpected content.");
+            }
 
-                   label_StatusBar.setText("Cool! Server just said us hello. We want to send a file...");
-                   newConnection.sendSentence("filerecv");
+            System.out.println("Cool! Server just said us hello. We want to send a file...");
+            label_StatusBar.setText("Cool! Server just said us hello. We want to send a file...");
+            newConnection.sendSentence("filerecv");
 
-                   tmpString=newConnection.getSentence();
-                   if (!tmpString.equals("filesend"))
-                   {
-                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
-                       return;
-                   }
+            tmpString=newConnection.getSentence();
+            if (!tmpString.equals("filesend"))
+            {
+                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                return;
+            }
 
-                   label_StatusBar.setText("Server said he is ready to accept the file...");
-                   newConnection.sendFile(input_filePath.getText());
+            System.out.println("Server said he is ready to accept the file...");
+            label_StatusBar.setText("Server said he is ready to accept the file...");
+            newConnection.sendFile(input_filePath.getText());
 
-                   tmpString=newConnection.getSentence();
-                   if (!tmpString.equals("OK"))
-                   {
-                       label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
-                       return;
-                   }
-                   label_StatusBar.setText("File sent.");
-                   newConnection.deInit();
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-           });
-    }
+            tmpString=newConnection.getSentence();
+            if (!tmpString.equals("OKay"))
+            {
+                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                return;
+            }
+            System.out.println("File sent.");
+            label_StatusBar.setText("File sent.");
+            newConnection.deInit();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    } //;
+        //new Thread(task).start();
 
     public void onClickBrowse(ActionEvent actionEvent)
     {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Select File");
         fileChooser.getExtensionFilters().addAll(
         new FileChooser.ExtensionFilter("All Files", "*.*"),
         new FileChooser.ExtensionFilter("Text Files", "*.txt"),
