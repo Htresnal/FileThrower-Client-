@@ -33,10 +33,7 @@ public class Controller {
     @FXML
     javafx.scene.control.TextField input_filePath;
 
-    public Controller() throws IOException
-    {
-        chbx_DoReceive.setSelected(true);
-    }
+    public Controller() throws IOException {};
 
     public void onClickBack(ActionEvent actionEvent)
     {
