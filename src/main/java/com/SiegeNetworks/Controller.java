@@ -33,7 +33,10 @@ public class Controller {
     @FXML
     javafx.scene.control.TextField input_filePath;
 
-    public Controller() throws IOException {}
+    public Controller() throws IOException
+    {
+        chbx_DoReceive.setSelected(true);
+    }
 
     public void onClickBack(ActionEvent actionEvent)
     {
@@ -73,14 +76,11 @@ public class Controller {
 
             System.out.println("Server said he is ready to accept the file...");
             label_StatusBar.setText("Server said he is ready to accept the file...");
-            newConnection.sendFile(input_filePath.getText());
 
-            tmpString=newConnection.getSentence();
-            if (!tmpString.equals("OKay"))
-            {
-                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
-                return;
-            }
+            newConnection.loadSendFile(input_filePath.getText());
+            int checkbox_state=chbx_DoReceive.isSelected()?1:0;
+            newConnection.sendSentence(Integer.toString(checkbox_state)+"<"+);
+            newConnection.sendFile(checkbox_state);
             System.out.println("File sent.");
             label_StatusBar.setText("File sent.");
             newConnection.deInit();
