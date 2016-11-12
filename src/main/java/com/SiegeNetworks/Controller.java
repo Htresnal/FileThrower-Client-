@@ -73,9 +73,25 @@ public class Controller {
 
             System.out.println("Server said he is ready to accept the file...");
             label_StatusBar.setText("Server said he is ready to accept the file...");
-
             newConnection.loadSendFile(input_filePath.getText());
-            newConnection.sendFile(chbx_DoReceive.isSelected()?1:0);
+
+            newConnection.sendSentence(newConnection.dcm_File.getName());
+            tmpString=newConnection.getSentence();
+            if (!tmpString.equals("OK"))
+            {
+                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                return;
+            }
+
+            newConnection.sendSentence(chbx_DoReceive.isSelected()?"1":"0");
+
+            tmpString=newConnection.getSentence();
+            if (!tmpString.equals("OK"))
+            {
+                label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
+                return;
+            }
+            newConnection.sendFile();
             System.out.println("File sent.");
             label_StatusBar.setText("File sent.");
             newConnection.deInit();
