@@ -49,7 +49,6 @@ public class Controller {
             NETConnection_Files newConnection=new NETConnection_Files(portAddr,input_Address.getText());
             newConnection.init(portAddr,input_Address.getText());
 
-            System.out.println("Sending some sincere greetings.");
             label_StatusBar.setText("Sending some sincere greetings.");
             newConnection.sendSentence("Hi!");
 
@@ -60,7 +59,6 @@ public class Controller {
                 throw new IOException("[ERROR] The received data has unexpected content.");
             }
 
-            System.out.println("Cool! Server just said us hello. We want to send a file...");
             label_StatusBar.setText("Cool! Server just said us hello. We want to send a file...");
             newConnection.sendSentence("filerecv");
 
@@ -71,7 +69,6 @@ public class Controller {
                 return;
             }
 
-            System.out.println("Server said he is ready to accept the file...");
             label_StatusBar.setText("Server said he is ready to accept the file...");
             newConnection.loadSendFile(input_filePath.getText());
 
@@ -92,7 +89,6 @@ public class Controller {
                 return;
             }
             newConnection.sendFile();
-            System.out.println("File sent.");
             label_StatusBar.setText("File sent.");
             newConnection.deInit();
         }
