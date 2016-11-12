@@ -78,9 +78,7 @@ public class Controller {
             label_StatusBar.setText("Server said he is ready to accept the file...");
 
             newConnection.loadSendFile(input_filePath.getText());
-            int checkbox_state=chbx_DoReceive.isSelected()?1:0;
-            newConnection.sendSentence(Integer.toString(checkbox_state)+"<"+);
-            newConnection.sendFile(checkbox_state);
+            newConnection.sendFile(chbx_DoReceive.isSelected()?1:0);
             System.out.println("File sent.");
             label_StatusBar.setText("File sent.");
             newConnection.deInit();
