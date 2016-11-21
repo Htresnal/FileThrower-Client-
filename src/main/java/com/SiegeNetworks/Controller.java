@@ -88,7 +88,7 @@ public class Controller {
                 label_StatusBar.setText("[ERROR] Server speaks some foreign language.");
                 return;
             }
-            newConnection.sendFile();
+            newConnmvnection.sendFile();
             label_StatusBar.setText("File sent.");
             newConnection.deInit();
         }
